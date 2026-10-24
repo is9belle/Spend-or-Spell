@@ -27,6 +27,14 @@ public class Enemy : MonoBehaviour
         rb.linearVelocity = dir.normalized * speed; // rb.velocity in older Unity
     }
 
+    void OnCollisionStay(Collision collision)
+{
+    if (collision.collider.CompareTag("Player"))
+    {
+        collision.collider.GetComponent<PlayerHealth>().TakeHit();
+    }
+}
+
     public void TakeDamage(int amount)
     {
         if (dead) return;

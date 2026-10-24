@@ -15,6 +15,7 @@ public class PlayerCaster : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         if (Input.GetMouseButton(0) && Time.time >= nextFire
             && GoldManager.Instance.TrySpend(spellCost))
         {
