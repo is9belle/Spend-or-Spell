@@ -801,7 +801,7 @@ GameObject:
   - component: {fileID: 892674861}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1202,6 +1202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1860532654}
   - component: {fileID: 1860532653}
+  - component: {fileID: 1860532655}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1237,6 +1238,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1860532655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860532652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 876e83206b98a43fcbc4eeac41fa8f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestSpawner
+  enemyPrefab: {fileID: 1952528771113516778, guid: 4bfc684cf55834d46b192f03b28cdbb8, type: 3}
+  player: {fileID: 892674860}
+  interval: 3
+  arenaHalfSize: {x: 19, y: 11}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
