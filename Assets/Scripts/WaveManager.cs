@@ -16,6 +16,7 @@ public class WaveManager : MonoBehaviour
     public float intervalShrink = 0.05f;  // spawns get this much faster each wave
     public float minSpawnInterval = 0.5f; // never faster than this
     public float speedGrowth = 0.05f;     // +5% enemy speed per wave
+    public float healthGrowth = 0.15f; // +15% enemy health per wave
     public int startingCoins = 5;         // coins scattered at the start of each wave
     public float shopDelay = 3f;          // seconds you can keep moving after the last kill
     public Vector2 arenaHalfSize = new Vector2(19f, 11f);
@@ -59,6 +60,7 @@ public class WaveManager : MonoBehaviour
         {
             Enemy e = Instantiate(enemyPrefab, SpawnPoint(), Quaternion.identity).GetComponent<Enemy>();
             e.speed *= 1f + speedGrowth * (wave - 1);
+            e.maxHealth = Mathf.RoundToInt(e.maxHealth * (1f + healthGrowth * (wave - 1)));
             yield return new WaitForSeconds(interval);
         }
     }

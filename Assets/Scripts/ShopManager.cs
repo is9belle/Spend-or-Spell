@@ -41,15 +41,21 @@ public class ShopManager : MonoBehaviour
     List<Card> BuildPool()
     {
         var pool = new List<Card>();
-        pool.Add(new Card { title = "Sharper Spells", description = "+1 spell damage", cost = Price(8),
-            apply = () => caster.spellDamage += 1 });
+        pool.Add(new Card { title = "Sharper Spells", description = "+20% spell damage", cost = Price(8),
+            apply = () => caster.damageMultiplier *= 1.2f });
         pool.Add(new Card { title = "Quick Cast", description = "Cast 20% faster", cost = Price(6),
-            apply = () => caster.fireCooldown *= 0.8f });
+            apply = () => caster.cooldownMultiplier *= 0.8f });
         pool.Add(new Card { title = "Swift Boots", description = "Move 15% faster", cost = Price(5),
             apply = () => controller.speed *= 1.15f });
         if (!health.IsFull())
             pool.Add(new Card { title = "Restore Life", description = "Get 1 life back", cost = Price(10),
                 apply = () => health.Heal() });
+        if (!caster.IsUnlocked(SpellType.Frost))
+            pool.Add(new Card { title = "Learn Frost Nova", description = "Blast and slow nearby enemies", cost = Price(12),
+                apply = () => caster.Unlock(SpellType.Frost) });
+        if (caster.IsUnlocked(SpellType.Frost))
+            pool.Add(new Card { title = "Wider Nova", description = "Frost Nova reaches farther", cost = Price(9),
+                apply = () => caster.novaRadius += 1f });
         return pool;
     }
 

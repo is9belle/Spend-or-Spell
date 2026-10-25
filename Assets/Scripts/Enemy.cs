@@ -11,12 +11,18 @@ public class Enemy : MonoBehaviour
     bool dead;
     Rigidbody rb;
     Transform player;
+    Renderer rend;
+    Color baseColor;
+    float slowFactor = 1f;
+    float slowUntil;
 
     void Start()
     {
         health = maxHealth;
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
+        rend = GetComponent<Renderer>();
+        baseColor = rend.material.color;
     }
 
     void FixedUpdate()
@@ -24,20 +30,31 @@ public class Enemy : MonoBehaviour
         if (player == null) return;
         Vector3 dir = player.position - transform.position;
         dir.z = 0f;
-        rb.linearVelocity = dir.normalized * speed; // rb.velocity in older Unity
+        float mult = Time.time < slowUntil ? slowFactor : 1f;
+        rb.linearVelocity = dir.normalized * speed * mult; // rb.velocity in older Unity
+    }
+
+    void Update()
+    {
+        rend.material.color = Time.time < slowUntil ? Color.cyan : baseColor;
     }
 
     void OnCollisionStay(Collision collision)
-{
-    if (collision.collider.CompareTag("Player"))
     {
-        collision.collider.GetComponent<PlayerHealth>().TakeHit();
+        if (collision.collider.CompareTag("Player"))
+            collision.collider.GetComponent<PlayerHealth>().TakeHit();
     }
-}
+
+    public void Slow(float factor, float duration)
+    {
+        slowFactor = factor;
+        slowUntil = Time.time + duration;
+    }
 
     public void TakeDamage(int amount)
     {
         if (dead) return;
+        DamageNumbers.Spawn(transform.position, amount);
         health -= amount;
         if (health <= 0) Die();
     }

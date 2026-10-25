@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 892674856}
   - component: {fileID: 892674855}
   - component: {fileID: 892674861}
+  - component: {fileID: 892674862}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -892,7 +893,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: d36fc68aec3dd4b08b6614b393f82dc7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -952,8 +953,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCaster
   projectilePrefab: {fileID: 2646262371710244858, guid: c710608faddc84c49a531650bf3dc194, type: 3}
-  spellCost: 1
-  fireCooldown: 0.25
+  spells:
+  - name: Fire Bolt
+    type: 0
+    cost: 1
+    damage: 10
+    cooldown: 0.25
+    unlocked: 1
+  - name: Frost Nova
+    type: 1
+    cost: 5
+    damage: 5
+    cooldown: 2
+    unlocked: 0
+  damageMultiplier: 1
+  cooldownMultiplier: 1
+  novaRadius: 4
+  slowFactor: 0.5
+  slowDuration: 2
+--- !u!114 &892674862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892674854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598aa97329fca4e2d9309d05a3bff459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  lives: 3
+  invincibleTime: 1.5
+  maxLives: 3
+  blinkAlpha: 0.3
 --- !u!1 &921845875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,6 +1236,8 @@ GameObject:
   - component: {fileID: 1860532654}
   - component: {fileID: 1860532653}
   - component: {fileID: 1860532655}
+  - component: {fileID: 1860532656}
+  - component: {fileID: 1860532657}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1247,13 +1282,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 1860532652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 876e83206b98a43fcbc4eeac41fa8f5a, type: 3}
+  m_Script: {fileID: 11500000, guid: ca330605a12f741e4a7fe350e07b1135, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestSpawner
+  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   enemyPrefab: {fileID: 1952528771113516778, guid: 4bfc684cf55834d46b192f03b28cdbb8, type: 3}
+  coinPrefab: {fileID: 6420567869763147499, guid: 71d76fdde7a75431e838c71952151943, type: 3}
   player: {fileID: 892674860}
-  interval: 3
+  shop: {fileID: 1860532656}
+  baseEnemies: 3
+  enemiesPerWave: 2
+  spawnInterval: 0.6
+  intervalShrink: 0.05
+  minSpawnInterval: 0.5
+  speedGrowth: 0.05
+  healthGrowth: 0.15
+  startingCoins: 5
+  shopDelay: 2
   arenaHalfSize: {x: 19, y: 11}
+--- !u!114 &1860532656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860532652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf3609e9d57f43da87e675667e5c57c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopManager
+  caster: {fileID: 892674861}
+  controller: {fileID: 892674855}
+  health: {fileID: 892674862}
+  cardsShown: 3
+  priceScale: 1
+  interestRate: 0.1
+  interestCap: 15
+--- !u!114 &1860532657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860532652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7485386aac7a64d53978faa11fbbf1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageNumbers
+  lifetime: 0.8
+  riseSpeed: 1.5
+  fontSize: 30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
