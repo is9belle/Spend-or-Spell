@@ -50,6 +50,7 @@ public class Enemy : MonoBehaviour
             Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0f);
             Instantiate(coinPrefab, transform.position + offset, Quaternion.identity);
         }
+        if (WaveManager.Instance != null) WaveManager.Instance.EnemyDied();
         Destroy(gameObject);
     }
 }

@@ -5,14 +5,37 @@ public class PlayerHealth : MonoBehaviour
 {
     public int lives = 3;
     public float invincibleTime = 1.5f;
+    public int maxLives = 3;
+
+    public bool IsFull()
+    {
+       return lives >= maxLives;
+    }
+
+    public void Heal()
+    {  
+        lives = Mathf.Min(lives + 1, maxLives);
+    }
+
+
+    [Range(0f, 1f)] public float blinkAlpha = 0.3f;
 
     float invincibleUntil;
     bool gameOver;
-    Renderer rend;
+    Material mat;
+    Color baseColor;
 
     void Start()
     {
-        rend = GetComponent<Renderer>();
+        mat = GetComponent<Renderer>().material; // makes a private copy of the material
+        baseColor = mat.color;
+    }
+
+    void SetAlpha(float a)
+    {
+        Color c = baseColor;
+        c.a = a;
+        mat.color = c;
     }
 
     public void TakeHit()
@@ -25,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
         if (lives <= 0)
         {
             gameOver = true;
-            rend.enabled = true;
+            SetAlpha(1f);
             Time.timeScale = 0f; // freezes the game
         }
     }
@@ -33,14 +56,12 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         if (gameOver) return;
-        // blink while invincible
         bool blinkOff = Time.time < invincibleUntil && ((int)(Time.time * 10f) % 2 == 0);
-        rend.enabled = !blinkOff;
+        SetAlpha(blinkOff ? blinkAlpha : 1f);
     }
 
     void OnGUI() // temporary UI until we build the real one
     {
-        // lives shown as red squares (stand-ins for pixel hearts)
         GUI.color = Color.red;
         for (int i = 0; i < lives; i++)
             GUI.DrawTexture(new Rect(10 + i * 40, 70, 32, 32), Texture2D.whiteTexture);

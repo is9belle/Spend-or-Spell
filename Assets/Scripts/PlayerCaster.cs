@@ -4,6 +4,7 @@ public class PlayerCaster : MonoBehaviour
 {
     public Projectile projectilePrefab;
     public int spellCost = 1;
+    public int spellDamage = 1;
     public float fireCooldown = 0.25f;
     PlayerController player;
     float nextFire;
@@ -23,6 +24,7 @@ public class PlayerCaster : MonoBehaviour
             Vector3 dir = player.AimDirection();
             Projectile p = Instantiate(projectilePrefab,
                 transform.position + dir * 1f, Quaternion.identity);
+            p.damage = spellDamage;
             p.Launch(dir);
         }
     }

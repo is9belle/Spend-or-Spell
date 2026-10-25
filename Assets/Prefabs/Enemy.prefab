@@ -156,4 +156,4 @@ MonoBehaviour:
   speed: 2.5
   maxHealth: 2
   coinPrefab: {fileID: 6420567869763147499, guid: 71d76fdde7a75431e838c71952151943, type: 3}
-  coinsDropped: 7
+  coinsDropped: 4
