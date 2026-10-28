@@ -6,12 +6,15 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 3;
     public GameObject coinPrefab;
     public int coinsDropped = 2;
+    public bool hopToMove = true;        // only moves while the slime is in the air
+    public float airSpeedBoost = 2f;     // makes up for standing still half the time
 
     int health;
     bool dead;
     Rigidbody rb;
     Transform player;
     SpriteRenderer sr;
+    SlimeVisuals visuals;
     Color baseColor;
     float slowFactor = 1f;
     float slowUntil;
@@ -22,20 +25,25 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
         sr = GetComponentInChildren<SpriteRenderer>();
+        visuals = GetComponentInChildren<SlimeVisuals>();
         baseColor = sr.color;
     }
 
     void FixedUpdate()
     {
-        if (player == null) return;
+        if (player == null || dead) return;
         Vector3 dir = player.position - transform.position;
         dir.z = 0f;
         float mult = Time.time < slowUntil ? slowFactor : 1f;
+        if (hopToMove && visuals != null)
+            mult *= visuals.IsAirborne ? airSpeedBoost : 0f;
         rb.linearVelocity = dir.normalized * speed * mult; // rb.velocity in older Unity
     }
 
     void Update()
     {
+        // SlimeVisuals owns the color while flashing or dying
+        if (visuals != null && (visuals.IsFlashing || visuals.IsDying)) return;
         sr.color = Time.time < slowUntil ? Color.cyan : baseColor;
     }
 
@@ -57,6 +65,7 @@ public class Enemy : MonoBehaviour
         DamageNumbers.Spawn(transform.position, amount);
         health -= amount;
         if (health <= 0) Die();
+        else if (visuals != null) visuals.Flash();
     }
 
     void Die()
@@ -68,6 +77,15 @@ public class Enemy : MonoBehaviour
             Instantiate(coinPrefab, transform.position + offset, Quaternion.identity);
         }
         if (WaveManager.Instance != null) WaveManager.Instance.EnemyDied();
-        Destroy(gameObject);
+
+        if (visuals != null)
+        {
+            rb.linearVelocity = Vector3.zero;   // stop sliding before it goes kinematic
+            visuals.Die(gameObject);                      // plays the squash/fade, then destroys the enemy
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -6,6 +6,12 @@ public class PlayerHealth : MonoBehaviour
     public int lives = 3;
     public float invincibleTime = 1.5f;
     public int maxLives = 3;
+    public Sprite heartSprite;
+    public float heartSize = 32f;
+    public float heartY = 58f;                              // lower number = higher on screen
+    public Color heartTint = new Color(1f, 0.7f, 0.7f);     // pulls the pink back toward red
+    public Color outlineColor = new Color(0.25f, 0f, 0f);   // dark red-black
+    public float outlineSize = 2f;                          // thickness in screen pixels
 
     public bool IsFull()
     {
@@ -60,11 +66,42 @@ public class PlayerHealth : MonoBehaviour
         SetAlpha(blinkOff ? blinkAlpha : 1f);
     }
 
+    void DrawSprite(Sprite s, Rect r)
+    {
+        Texture2D t = s.texture;
+        Rect tr = s.textureRect;
+        Rect uv = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width, tr.height / t.height);
+        GUI.DrawTextureWithTexCoords(r, t, uv);
+    }
+
     void OnGUI() // temporary UI until we build the real one
     {
-        GUI.color = Color.red;
+        GUI.color = heartTint;
         for (int i = 0; i < lives; i++)
-            GUI.DrawTexture(new Rect(10 + i * 40, 70, 32, 32), Texture2D.whiteTexture);
+        {
+            Rect r = new Rect(10 + i * (heartSize + 8), heartY, heartSize, heartSize);
+
+            if (heartSprite != null)
+            {
+                // outline: dark copies shifted in 8 directions
+                GUI.color = outlineColor;
+                for (int dx = -1; dx <= 1; dx++)
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0) continue;
+                    DrawSprite(heartSprite, new Rect(r.x + dx * outlineSize, r.y + dy * outlineSize, r.width, r.height));
+                }
+
+                // the heart itself
+                GUI.color = heartTint;
+                DrawSprite(heartSprite, r);
+            }
+            else
+            {
+                GUI.color = Color.red;
+                GUI.DrawTexture(r, Texture2D.whiteTexture);
+            }
+        }
         GUI.color = Color.white;
 
         if (gameOver)
@@ -78,7 +115,7 @@ public class PlayerHealth : MonoBehaviour
             if (GUI.Button(new Rect(Screen.width / 2f - 100, Screen.height / 2f + 10, 200, 60), "Retry"))
             {
                 Time.timeScale = 1f;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneFader.Load(SceneManager.GetActiveScene().name);
             }
         }
     }
