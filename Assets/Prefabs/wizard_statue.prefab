@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5311449065991959717}
   - component: {fileID: 3449460101804198620}
   - component: {fileID: -2196857829753948806}
+  - component: {fileID: -2652735811210412443}
   m_Layer: 0
   m_Name: wizard_statue
   m_TagString: Untagged
@@ -130,3 +131,15 @@ MonoBehaviour:
   baseOrder: 50
   perUnit: 5
   useZ: 0
+--- !u!114 &-2652735811210412443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831181943309690517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96aec00ad77d4105a7f53a327bd07aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksProjectiles

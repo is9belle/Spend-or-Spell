@@ -43024,14 +43024,24 @@ MonoBehaviour:
   - name: Frost Nova
     type: 1
     cost: 5
-    damage: 5
+    damage: 10
     cooldown: 2
     unlocked: 0
   damageMultiplier: 1
   cooldownMultiplier: 1
   novaRadius: 4
   slowFactor: 0.5
-  slowDuration: 2
+  slowDuration: 4
+  novaFrames:
+  - {fileID: 487763364, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: -1625536913, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: 729595557, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: -973588049, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: -1939258016, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: 43706982, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: 869945987, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  - {fileID: 1677496382, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+  novaFxTime: 0.4
 --- !u!114 &892674862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43049,10 +43059,16 @@ MonoBehaviour:
   maxLives: 3
   heartSprite: {fileID: 21300000, guid: 679940cc04eb74514a1ce234b2e557b7, type: 3}
   heartSize: 52
-  heartY: 60
+  heartY: 70
   heartTint: {r: 0.764151, g: 0.2198736, b: 0.2198736, a: 1}
   outlineColor: {r: 0.16037738, g: 0, b: 0, a: 1}
   outlineSize: 3
+  font: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
+  fontScale: 1.1
+  titleColor: {r: 0.85, g: 0.15, b: 0.2, a: 1}
+  retryColor: {r: 0.7, g: 0.14, b: 0.18, a: 1}
+  menuColor: {r: 0.42, g: 0.2, b: 0.7, a: 1}
+  menuSceneName: MenuScreen
   blinkAlpha: 0.3
 --- !u!114 &892674863
 MonoBehaviour:
@@ -95625,6 +95641,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoldManager
   gold: 20
+  manaIcon: {fileID: 21300000, guid: a04ad7975ee54435a9afae7e4f58c530, type: 3}
+  iconSize: 50
+  font: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
+  fontSize: 45
+  textColor: {r: 0.09411765, g: 0.49803922, b: 0.9882353, a: 1}
+  position: {x: 10, y: 10}
 --- !u!4 &1860532654
 Transform:
   m_ObjectHideFlags: 0
@@ -95666,6 +95688,22 @@ MonoBehaviour:
   startingCoins: 8
   shopDelay: 2
   arenaHalfSize: {x: 19, y: 11}
+  font: {fileID: 12800000, guid: 88017adeaa79245b0917f0d2d7abe6e8, type: 3}
+  bodyFont: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
+  fontScale: 1.1
+  hudFontSize: 32
+  hudY: 135
+  hudLineSpacing: 42
+  hudColor: {r: 0.3679245, g: 0.1302129, b: 0, a: 1}
+  clearedText: Wave {0} cleared!
+  countdownLabel: The spellbook opens in
+  bannerFontSize: 84
+  numberFontSize: 150
+  labelFontSize: 34
+  bannerColor: {r: 1, g: 0.8067175, b: 0.15566039, a: 1}
+  numberColor: {r: 1, g: 0.88789797, b: 0.4481132, a: 1}
+  bannerY: 0.26
+  numberPulse: 0.35
 --- !u!114 &1860532656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95681,6 +95719,34 @@ MonoBehaviour:
   caster: {fileID: 892674861}
   controller: {fileID: 892674855}
   health: {fileID: 892674862}
+  spellOffers:
+  - spell: 1
+    title: Learn Frost Nova
+    description: Learn the AOE attach Frost Nova.
+    baseCost: 12
+    icon: {fileID: 21300000, guid: 8062d942b7db74d9b839431bccd4ef1f, type: 3}
+    color: {r: 0.23921569, g: 0.75686276, b: 0.972549, a: 0}
+  damageIcon: {fileID: 21300000, guid: b70fcc58037654a27807358f1030ef4b, type: 3}
+  damageColor: {r: 0.36, g: 0.17, b: 0.6, a: 1}
+  castSpeedIcon: {fileID: 21300000, guid: fe7e99fdf337e4c8da4e8f90ca76d852, type: 3}
+  castSpeedColor: {r: 0.62, g: 0.4, b: 0.08, a: 1}
+  bootsIcon: {fileID: 21300000, guid: e9f0c4ee19b6840de9538072d181adea, type: 3}
+  bootsColor: {r: 0.48, g: 0.3, b: 0.15, a: 1}
+  lifeIcon: {fileID: 21300000, guid: 8c33d147441d643219de43314df0eec6, type: 3}
+  lifeColor: {r: 0.7, g: 0.14, b: 0.18, a: 1}
+  novaUpgradeIcon: {fileID: 21300000, guid: 7f1b44dea85e245b1bd7e6959a717892, type: 3}
+  novaUpgradeColor: {r: 0.1, g: 0.5, b: 0.72, a: 1}
+  titleFont: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
+  bodyFont: {fileID: 12800000, guid: cc72eca62c5434a9cac2ce652e885255, type: 3}
+  fontScale: 1.1
+  cornerRadius: 28
+  buttonTextColor: {r: 1, g: 0.92, b: 0.6, a: 1}
+  startButtonColor: {r: 0.42, g: 0.2, b: 0.7, a: 1}
+  startButtonSize: {x: 900, y: 110}
+  startButtonFont: 44
+  interestFont: 38
+  cardsTop: 190
+  cardsHeight: 0.55
   cardsShown: 3
   priceScale: 1
   interestRate: 0.1

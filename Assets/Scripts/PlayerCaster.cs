@@ -25,6 +25,10 @@ public class PlayerCaster : MonoBehaviour
     public float novaRadius = 4f;
     public float slowFactor = 0.4f;       // enemy speed multiplier while slowed
     public float slowDuration = 2.5f;
+    
+    [Header("Frost Nova visual")]
+    public Sprite[] novaFrames;      // one sprite, or several frames in order
+    public float novaFxTime = 0.4f;
 
     int selected;
     float nextCast;
@@ -117,7 +121,12 @@ public class PlayerCaster : MonoBehaviour
         foreach (Collider c in Physics.OverlapSphere(transform.position, novaRadius))
         {
             Enemy e = c.GetComponent<Enemy>();
-            if (e == null) continue;
+            if (e == null)
+            {
+                var b = c.GetComponentInParent<Breakable>();
+                if (b != null) { b.Hit(); any = true; }
+                continue;
+            }
             e.Slow(slowFactor, slowDuration);
             e.TakeDamage(Damage(s));
             any = true;
@@ -126,8 +135,16 @@ public class PlayerCaster : MonoBehaviour
         return any; // no enemies in range = no cast, no gold spent
     }
 
-    void ShowNovaFlash() // placeholder visual: a flat blue disc for a moment
+    void ShowNovaFlash()
     {
+        if (novaFrames != null && novaFrames.Length > 0 && novaFrames[0] != null)
+        {
+            NovaEffect.Spawn(new Vector3(transform.position.x, transform.position.y, 0f),
+                             novaFrames, novaRadius * 2f, novaFxTime);
+            return;
+        }
+
+        // fallback: the old placeholder disc, used when no sprites are assigned
         GameObject disc = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         Destroy(disc.GetComponent<Collider>());
         disc.transform.position = new Vector3(transform.position.x, transform.position.y, 0.5f);

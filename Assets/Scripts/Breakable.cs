@@ -24,6 +24,14 @@ public class Breakable : MonoBehaviour
 
     void Check(GameObject o)
     {
+        var proj = o.GetComponentInParent<Projectile>();
+        if (proj != null)
+        {
+            Destroy(proj.gameObject);   // the bolt stops here
+            Hit();
+            return;
+        }
+
         string n = o.name.ToLower();
         foreach (var s in hitByNames)
             if (n.Contains(s)) { Hit(); return; }

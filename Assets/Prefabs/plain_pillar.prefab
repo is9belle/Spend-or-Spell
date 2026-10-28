@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6573522930084237282}
   - component: {fileID: 3418444778029780198}
   - component: {fileID: 3443128423511535027}
+  - component: {fileID: -53017232462168378}
   m_Layer: 0
   m_Name: plain_pillar
   m_TagString: Untagged
@@ -130,3 +131,15 @@ MonoBehaviour:
   baseOrder: 50
   perUnit: 5
   useZ: 0
+--- !u!114 &-53017232462168378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4552326924593531585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96aec00ad77d4105a7f53a327bd07aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksProjectiles

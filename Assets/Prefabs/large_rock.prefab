@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7347669923443822368}
   - component: {fileID: -2999365523732887303}
   - component: {fileID: -4666472310567100566}
+  - component: {fileID: -4614723296369212431}
   m_Layer: 0
   m_Name: large_rock
   m_TagString: Untagged
@@ -146,3 +147,15 @@ MonoBehaviour:
   baseOrder: 50
   perUnit: 5
   useZ: 0
+--- !u!114 &-4614723296369212431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654726077396402095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96aec00ad77d4105a7f53a327bd07aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksProjectiles
