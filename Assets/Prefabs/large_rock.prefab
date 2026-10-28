@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4613129603598827398}
   - component: {fileID: 7347669923443822368}
   - component: {fileID: -2999365523732887303}
-  - component: {fileID: -4666472310567100566}
   - component: {fileID: -4614723296369212431}
+  - component: {fileID: 7120085540131042066}
   m_Layer: 0
   m_Name: large_rock
   m_TagString: Untagged
@@ -115,24 +115,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.98, y: 0.49, z: 1}
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Size: {x: 1.0370001, y: 0.4425, z: 1}
+  m_Center: {x: 0, y: -0.27041668, z: 0}
 --- !u!114 &-2999365523732887303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6654726077396402095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a269bcf9dc84be98f70d0723407ba5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ysort
-  baseOrder: 50
-  perUnit: 5
-  useZ: 0
---- !u!114 &-4666472310567100566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,3 +144,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96aec00ad77d4105a7f53a327bd07aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksProjectiles
+--- !u!114 &7120085540131042066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654726077396402095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a279fa8c54f4f42de9141468c5611679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintCollider
+  widthFraction: 0.85
+  heightFraction: 0.45
+  depth: 1
+  liveUpdate: 0

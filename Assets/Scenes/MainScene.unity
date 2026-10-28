@@ -19649,7 +19649,7 @@ MonoBehaviour:
     count: 1
     maxCount: 1
     radius: 0.75
-  - prefab: {fileID: 8389587807995413963, guid: 528b97e54876346e0be13e3099fb5c72, type: 3}
+  - prefab: {fileID: 6654726077396402095, guid: 5de4aa3540d45451cb503928cc7d18a4, type: 3}
     count: 2
     maxCount: 3
     radius: 0.6
@@ -42860,6 +42860,7 @@ GameObject:
   - component: {fileID: 892674862}
   - component: {fileID: 892674863}
   - component: {fileID: 892674864}
+  - component: {fileID: 892674865}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -43021,12 +43022,16 @@ MonoBehaviour:
     damage: 15
     cooldown: 0.25
     unlocked: 1
+    icon: {fileID: -2035018970, guid: 479b0538871e048b6925c01732bed658, type: 3}
+    color: {r: 0, g: 0, b: 0, a: 0}
   - name: Frost Nova
     type: 1
     cost: 5
     damage: 10
     cooldown: 2
     unlocked: 0
+    icon: {fileID: -1939258016, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
+    color: {r: 0, g: 0, b: 0, a: 0}
   damageMultiplier: 1
   cooldownMultiplier: 1
   novaRadius: 4
@@ -43042,6 +43047,9 @@ MonoBehaviour:
   - {fileID: 869945987, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
   - {fileID: 1677496382, guid: 24fa62853d2b545fbb0a38447f471881, type: 3}
   novaFxTime: 0.4
+  font: {fileID: 12800000, guid: 88017adeaa79245b0917f0d2d7abe6e8, type: 3}
+  bodyFont: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
+  fontScale: 1.1
 --- !u!114 &892674862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43104,6 +43112,22 @@ MonoBehaviour:
   baseOrder: 50
   perUnit: 5
   useZ: 0
+--- !u!114 &892674865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892674854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a279fa8c54f4f42de9141468c5611679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintCollider
+  widthFraction: 0.5
+  heightFraction: 0.2
+  depth: 1
+  liveUpdate: 0
 --- !u!1 &897607681
 GameObject:
   m_ObjectHideFlags: 0

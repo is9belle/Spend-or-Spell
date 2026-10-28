@@ -129,7 +129,8 @@ MonoBehaviour:
   amount: 1
   onlyIfNotFull: 1
   lifetime: 0
-  bobHeight: 0.08
+  targetWidth: 0.5
+  bobHeight: 0.1
   bobSpeed: 3
 --- !u!1 &6776186618708352203
 GameObject:

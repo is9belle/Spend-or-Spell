@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3465384124434264992}
   - component: {fileID: -7275917150602295049}
   - component: {fileID: -8546923280758293188}
+  - component: {fileID: -3640662341230882643}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Untagged
@@ -114,8 +115,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.55, y: 0.4, z: 1}
-  m_Center: {x: 0, y: -0.28, z: 0}
+  m_Size: {x: 0.66933334, y: 0.49333337, z: 1}
+  m_Center: {x: 0, y: -0.24666667, z: 0}
 --- !u!114 &-7275917150602295049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,3 +152,19 @@ MonoBehaviour:
   - {fileID: 5678260278716865403, guid: 9cca746eb660349ccbe9153ce1a0c848, type: 3}
   dropChance: 0.5
   flashColor: {r: 1, g: 0.55, b: 0.55, a: 1}
+--- !u!114 &-3640662341230882643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6421521603210493015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a279fa8c54f4f42de9141468c5611679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintCollider
+  widthFraction: 0.8
+  heightFraction: 0.5
+  depth: 1
+  liveUpdate: 0

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5134500449175695831}
   - component: {fileID: 9040372753659682135}
   - component: {fileID: -6879849365934839638}
+  - component: {fileID: -107332393617451609}
   m_Layer: 0
   m_Name: torch_pillar
   m_TagString: Untagged
@@ -115,8 +116,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.65, y: 0.27, z: 1}
-  m_Center: {x: 0, y: -0.49, z: 0}
+  m_Size: {x: 0.602, y: 0.27353334, z: 0.7692308}
+  m_Center: {x: 0, y: -0.48489997, z: 0}
 --- !u!114 &5134500449175695831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +163,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96aec00ad77d4105a7f53a327bd07aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksProjectiles
+--- !u!114 &-107332393617451609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8211204433797489548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a279fa8c54f4f42de9141468c5611679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintCollider
+  widthFraction: 0.7
+  heightFraction: 0.22
+  depth: 1
+  liveUpdate: 0

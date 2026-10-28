@@ -137,6 +137,8 @@ GameObject:
   - component: {fileID: 8195118769781201923}
   - component: {fileID: 5689921337257852643}
   - component: {fileID: 7890206210796580054}
+  - component: {fileID: -4035521969925936851}
+  - component: {fileID: -6010076829777296044}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -226,3 +228,40 @@ MonoBehaviour:
   coinsDropped: 6
   hopToMove: 1
   airSpeedBoost: 2
+--- !u!65 &-4035521969925936851
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906532698024607184}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6010076829777296044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906532698024607184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a279fa8c54f4f42de9141468c5611679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintCollider
+  widthFraction: 0.7
+  heightFraction: 0.4
+  depth: 1
+  liveUpdate: 0
