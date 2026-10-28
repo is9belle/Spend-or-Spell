@@ -151,7 +151,7 @@ public class PlayerCaster : MonoBehaviour
         {
             Spell s = spells[i];
             string text = s.unlocked
-                ? "[" + (i + 1) + "] " + s.name + "\n" + s.cost + " gold"
+                ? "[" + (i + 1) + "] " + s.name + "\n" + s.cost + " mana"
                 : "[" + (i + 1) + "] Locked";
             if (!s.unlocked) GUI.color = new Color(1f, 1f, 1f, 0.4f);
             else GUI.color = (i == selected) ? Color.yellow : Color.white;

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Camera cam;
     Vector3 move;
+    public Vector3 MoveInput { get { return move; } }
 
     void Start()
     {

@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     bool dead;
     Rigidbody rb;
     Transform player;
-    Renderer rend;
+    SpriteRenderer sr;
     Color baseColor;
     float slowFactor = 1f;
     float slowUntil;
@@ -21,8 +21,8 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
-        rend = GetComponent<Renderer>();
-        baseColor = rend.material.color;
+        sr = GetComponentInChildren<SpriteRenderer>();
+        baseColor = sr.color;
     }
 
     void FixedUpdate()
@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        rend.material.color = Time.time < slowUntil ? Color.cyan : baseColor;
+        sr.color = Time.time < slowUntil ? Color.cyan : baseColor;
     }
 
     void OnCollisionStay(Collision collision)

@@ -22,20 +22,20 @@ public class PlayerHealth : MonoBehaviour
 
     float invincibleUntil;
     bool gameOver;
-    Material mat;
+    SpriteRenderer sr;
     Color baseColor;
 
     void Start()
     {
-        mat = GetComponent<Renderer>().material; // makes a private copy of the material
-        baseColor = mat.color;
+        sr = GetComponentInChildren<SpriteRenderer>();
+        baseColor = sr.color;
     }
 
     void SetAlpha(float a)
     {
         Color c = baseColor;
         c.a = a;
-        mat.color = c;
+        sr.color = c;
     }
 
     public void TakeHit()

@@ -33,6 +33,6 @@ void OnGUI() // temporary display until we build the real UI
         style.fontStyle = FontStyle.Bold;
         style.normal.textColor = Color.yellow;
     }
-    GUI.Label(new Rect(10, 10, 400, 50), "Gold: " + gold, style);
+    GUI.Label(new Rect(10, 10, 400, 50), "Mana: " + gold, style);
 }
 }

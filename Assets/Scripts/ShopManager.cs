@@ -113,7 +113,7 @@ public class ShopManager : MonoBehaviour
         GUI.color = Color.white;
 
         GUI.Label(new Rect(0, 30, w, 60), "Spellbook", titleStyle);
-        GUI.Label(new Rect(0, 95, w, 40), "Your gold: " + gm.gold, bodyStyle);
+        GUI.Label(new Rect(0, 95, w, 40), "Your mana: " + gm.gold, bodyStyle);
 
         float cardW = 260f, cardH = 200f, gap = 30f;
         float startX = (w - (cards.Count * cardW + (cards.Count - 1) * gap)) / 2f;
@@ -133,7 +133,7 @@ public class ShopManager : MonoBehaviour
             {
                 GUI.enabled = gm.gold >= c.cost;
                 if (GUI.Button(new Rect(r.x + 20, r.y + cardH - 60, cardW - 40, 44),
-                               "Buy (" + c.cost + " gold)", buttonStyle))
+                               "Buy (" + c.cost + " mana)", buttonStyle))
                 {
                     if (gm.TrySpend(c.cost))
                     {
@@ -148,9 +148,9 @@ public class ShopManager : MonoBehaviour
         int interest = PreviewInterest();
         float y = 150 + cardH + 30;
         GUI.Label(new Rect(0, y, w, 40),
-            "Interest: +" + interest + " (" + Mathf.RoundToInt(interestRate * 100f) + "% of your gold, max " + interestCap + ")",
+            "Interest: +" + interest + " (" + Mathf.RoundToInt(interestRate * 100f) + "% of your mana, max " + interestCap + ")",
             bodyStyle);
-        GUI.Label(new Rect(0, y + 35, w, 40), "Gold after interest: " + (gm.gold + interest), bodyStyle);
+        GUI.Label(new Rect(0, y + 35, w, 40), "Mana after interest: " + (gm.gold + interest), bodyStyle);
 
         string label = interest > 0
             ? "Collect +" + interest + " interest & start wave " + nextWave
