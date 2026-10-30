@@ -34566,6 +34566,7 @@ GameObject:
   - component: {fileID: 719428954}
   - component: {fileID: 719428955}
   - component: {fileID: 719428956}
+  - component: {fileID: 719428957}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -34662,21 +34663,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   walkDown:
-  - {fileID: 1433123030, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: 1970290513, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: 1914334033, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -479778334, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
+  - {fileID: 253247566, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: 816525067, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: 1806990941, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: 457532146, guid: f96485ee063e94751a83ac943374c934, type: 3}
   walkSide:
-  - {fileID: 866935870, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -1014843917, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -599520395, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -1376415376, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
+  - {fileID: 307612232, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: -985240088, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: 305414893, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: -173222274, guid: f96485ee063e94751a83ac943374c934, type: 3}
   walkUp:
-  - {fileID: -1794407206, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -539557172, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: -2051536310, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  - {fileID: 1540812616, guid: d47c37c764ed54cf0886833d553c5502, type: 3}
-  framesPerSecond: 8
+  - {fileID: 1465158449, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: -14444625, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: 250593564, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  - {fileID: -513462556, guid: f96485ee063e94751a83ac943374c934, type: 3}
+  framesPerSecond: 6
+--- !u!114 &719428957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719428953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba3ab567967d4bd0b205838416a571e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WalkBob
+  stepLength: 0.7
+  bobHeight: 0.07
+  squash: 0.04
+  tiltDegrees: 3
+  minSpeed: 0.15
+  blendSpeed: 12
 --- !u!1 &722280336
 GameObject:
   m_ObjectHideFlags: 0

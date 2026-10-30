@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7268146643157585484}
   - component: {fileID: 2641794073049080586}
   - component: {fileID: 7250823030208316055}
+  - component: {fileID: 6437528580984137872}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -82,15 +83,15 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 124e9d4ed058c4960b623b49ffa2860c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.88666666, y: 0.95}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!114 &7250823030208316055
@@ -121,10 +122,32 @@ MonoBehaviour:
   flashTime: 0.12
   hitPunch: 0.15
   deathTime: 0.5
+  attackFrames: []
+  releaseFrame: 4
+  attackTime: 0.6
   shadow: 1
   shadowColor: {r: 0, g: 0, b: 0, a: 0.35}
   shadowSize: {x: 0.7, y: 0.22}
   groundOffset: -0.45
+  bonusLift: 0
+  bonusSquashX: 1
+  bonusSquashY: 1
+  scaleMultiplier: 1
+--- !u!114 &6437528580984137872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7231394154278266021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a269bcf9dc84be98f70d0723407ba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ysort
+  baseOrder: 50
+  perUnit: 5
+  useZ: 0
 --- !u!1 &8906532698024607184
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +157,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6849331876254688884}
-  - component: {fileID: 8195118769781201923}
   - component: {fileID: 5689921337257852643}
   - component: {fileID: 7890206210796580054}
   - component: {fileID: -4035521969925936851}
@@ -162,27 +184,6 @@ Transform:
   - {fileID: 7268146643157585484}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8195118769781201923
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8906532698024607184}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5689921337257852643
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -224,10 +225,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 2.5
   maxHealth: 30
+  contactDamage: 1
+  slowResistance: 0
   coinPrefab: {fileID: 6420567869763147499, guid: 71d76fdde7a75431e838c71952151943, type: 3}
-  coinsDropped: 6
+  coinsDropped: 4
+  behavior: 0
   hopToMove: 1
   airSpeedBoost: 2
+  flipToFace: 0
+  spriteFacesRight: 1
+  weaveAngle: 55
+  weaveSpeed: 4
+  preferredDistance: 7
+  distanceTolerance: 1.5
+  fireRange: 13
+  fireInterval: 2
+  firstShotDelay: 1
+  arrowSpeed: 8
+  arrowDamage: 1
+  arrowSprite: {fileID: 0}
+  arrowScale: 1
+  recoveryPause: 0.6
+  countsForWave: 1
 --- !u!65 &-4035521969925936851
 BoxCollider:
   m_ObjectHideFlags: 0

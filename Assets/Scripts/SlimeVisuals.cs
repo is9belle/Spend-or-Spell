@@ -3,43 +3,57 @@ using UnityEngine;
 public class SlimeVisuals : MonoBehaviour
 {
     [Header("Hop")]
-    public Sprite[] frames;               // the 8 slime frames, in order
-    public float hopTime = 0.8f;          // seconds for one full hop
-    public float hopHeight = 0.25f;       // how high it lifts, in world units
-    public bool randomStart = true;       // so a group doesn't hop in sync
+    public Sprite[] frames;               // the animation frames, in order
+    public float hopTime = 0.8f;          // seconds for one full cycle
+    public float hopHeight = 0.25f;
+    public bool randomStart = true;
 
     [Header("Hit flash")]
     public Color flashColor = new Color(1f, 0.35f, 0.35f);
     public float flashTime = 0.12f;
-    public float hitPunch = 0.15f;        // quick squash when hit
+    public float hitPunch = 0.15f;
 
     [Header("Death")]
-    public float deathTime = 0.35f;
+    public float deathTime = 0.5f;
+
+    [Header("Attack animation (archer)")]
+    public Sprite[] attackFrames;
+    public int releaseFrame = 4;
+    public float attackTime = 0.6f;
 
     [Header("Shadow")]
     public bool shadow = true;
     public Color shadowColor = new Color(0f, 0f, 0f, 0.35f);
-    public Vector2 shadowSize = new Vector2(0.7f, 0.22f);
-    public float groundOffset = -0.45f;   // where the feet are (local units, at scale 1)
+    public Vector2 shadowSize = new Vector2(0.7f, 0.22f);   // world units
+    public float groundOffset = -0.45f;
+
+    // set by other scripts (the boss uses these)
+    [HideInInspector] public float bonusLift;
+    [HideInInspector] public float bonusSquashX = 1f;
+    [HideInInspector] public float bonusSquashY = 1f;
+    [HideInInspector] public float scaleMultiplier = 1f;
 
     SpriteRenderer sr;
     Vector3 baseLocal, baseScale;
     Color baseColor;
-    float offset, flashTimer, deathT;
-    bool flashing, dying;
+    float offset, flashTimer, deathT, attackT;
+    bool flashing, dying, attacking, released;
+    System.Action onRelease;
+    GameObject deathRoot;
     Transform shadowT;
     SpriteRenderer shadowSr;
 
-    // lets a movement script move the slime only while it's in the air
-    public bool IsAirborne
-    {
-        get { float p = Phase(); return !dying && p > 0.25f && p < 0.75f; }
-    }
+    public bool IsAirborne { get { float p = Phase(); return !dying && p > 0.25f && p < 0.75f; } }
     public bool IsFlashing { get { return flashing; } }
     public bool IsDying { get { return dying; } }
+    public bool IsAttacking { get { return attacking; } }
+    public bool HasAttackAnimation { get { return attackFrames != null && attackFrames.Length > 0; } }
 
     void Awake()
     {
+        if (GetComponent<Rigidbody>() != null)
+            Debug.LogWarning("SlimeVisuals is on the same object as the Rigidbody. Move it to a child object with the SpriteRenderer.", this);
+
         sr = GetComponent<SpriteRenderer>();
         baseLocal = transform.localPosition;
         baseScale = transform.localScale;
@@ -74,7 +88,7 @@ public class SlimeVisuals : MonoBehaviour
 
     float Phase() { return ((Time.time + offset) / hopTime) % 1f; }
 
-    // ---- call these from your enemy script ----
+    // ---- called from enemy scripts ----
     public void Flash()
     {
         if (dying) return;
@@ -83,7 +97,14 @@ public class SlimeVisuals : MonoBehaviour
         flashTimer = flashTime;
     }
 
-    GameObject deathRoot;
+    public void PlayAttack(System.Action release)
+    {
+        if (dying || attacking || !HasAttackAnimation) return;
+        attacking = true;
+        released = false;
+        attackT = 0f;
+        onRelease = release;
+    }
 
     public void Die(GameObject root)
     {
@@ -92,14 +113,68 @@ public class SlimeVisuals : MonoBehaviour
         dying = true;
         deathT = 0f;
         deathRoot = root != null ? root : gameObject;
+        bonusLift = 0f; bonusSquashX = 1f; bonusSquashY = 1f;
 
         foreach (var c in deathRoot.GetComponentsInChildren<Collider>()) c.enabled = false;
         foreach (var mb in deathRoot.GetComponents<MonoBehaviour>())
             if (mb != this) mb.enabled = false;
         var rb = deathRoot.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
+    }
 
-        Debug.Log("Slime death started on " + deathRoot.name);
+    // squash/stretch while keeping the feet on the ground
+    void SetSquash(float sx, float sy, float lift)
+    {
+        float tx = sx * bonusSquashX * scaleMultiplier;
+        float ty = sy * bonusSquashY * scaleMultiplier;
+        transform.localScale = new Vector3(baseScale.x * tx, baseScale.y * ty, baseScale.z);
+        float drop = groundOffset * (1f - ty) * baseScale.y;
+        transform.localPosition = baseLocal + Vector3.up * (lift + bonusLift + drop);
+    }
+
+    void Update()
+    {
+        if (sr == null) return;
+        if (dying) { UpdateDeath(); return; }
+
+        float phase = Phase();
+        float lift = 0f;
+
+        if (attacking)
+        {
+            attackT += Time.deltaTime;
+            float ak = attackT / attackTime;
+            int idx = Mathf.Min((int)(ak * attackFrames.Length), attackFrames.Length - 1);
+            sr.sprite = attackFrames[idx];
+            if (!released && idx >= releaseFrame)
+            {
+                released = true;
+                if (onRelease != null) onRelease();
+            }
+            if (ak >= 1f) attacking = false;
+        }
+        else
+        {
+            float air = Mathf.Clamp01((phase - 0.25f) / 0.5f);
+            lift = Mathf.Sin(air * Mathf.PI) * hopHeight;
+            if (frames != null && frames.Length > 0)
+                sr.sprite = frames[Mathf.Min((int)(phase * frames.Length), frames.Length - 1)];
+        }
+
+        // hit flash + punch
+        float sx = 1f, sy = 1f;
+        if (flashing)
+        {
+            flashTimer -= Time.deltaTime;
+            float k = Mathf.Clamp01(flashTimer / flashTime);
+            sr.color = flashColor;
+            sx = 1f + hitPunch * k;
+            sy = 1f - hitPunch * k;
+            if (flashTimer <= 0f) { sr.color = baseColor; flashing = false; }
+        }
+
+        SetSquash(sx, sy, lift);
+        UpdateShadow(lift, 1f);
     }
 
     void UpdateDeath()
@@ -122,56 +197,15 @@ public class SlimeVisuals : MonoBehaviour
         if (k >= 1f) Destroy(deathRoot);
     }
 
-    GameObject Target()
-    {
-        var col = GetComponentInParent<Collider>();
-        return col != null ? col.gameObject : gameObject;
-    }
-
-    // squash/stretch while keeping the feet on the ground
-    void SetSquash(float sx, float sy, float lift)
-    {
-        transform.localScale = new Vector3(baseScale.x * sx, baseScale.y * sy, baseScale.z);
-        float drop = groundOffset * (1f - sy) * baseScale.y;
-        transform.localPosition = baseLocal + Vector3.up * (lift + drop);
-    }
-
-    void Update()
-    {
-        if (sr == null) return;
-        if (dying) { UpdateDeath(); return; }
-
-        // hop
-        float phase = Phase();
-        float air = Mathf.Clamp01((phase - 0.25f) / 0.5f);
-        float lift = Mathf.Sin(air * Mathf.PI) * hopHeight;
-        if (frames != null && frames.Length > 0)
-            sr.sprite = frames[Mathf.Min((int)(phase * frames.Length), frames.Length - 1)];
-
-        // hit flash + punch
-        float sx = 1f, sy = 1f;
-        if (flashing)
-        {
-            flashTimer -= Time.deltaTime;
-            float k = Mathf.Clamp01(flashTimer / flashTime);
-            sr.color = flashColor;
-            sx = 1f + hitPunch * k;
-            sy = 1f - hitPunch * k;
-            if (flashTimer <= 0f) { sr.color = baseColor; flashing = false; }
-        }
-
-        SetSquash(sx, sy, lift);
-        UpdateShadow(lift, 1f);
-    }
-
     void UpdateShadow(float lift, float fade)
     {
         if (shadowT == null) return;
         Vector3 basePos = transform.parent != null ? transform.parent.TransformPoint(baseLocal) : baseLocal;
         shadowT.position = basePos + Vector3.up * (groundOffset * baseScale.y);
         Vector3 ls = transform.lossyScale;
-        float shrink = 1f - 0.4f * Mathf.Clamp01(lift / Mathf.Max(0.001f, hopHeight));
-        shadowT.localScale = new Vector3(shadowSize.x * shrink / ls.x, shadowSize.y * shrink / ls.y, 1f);
+        float shrink = 1f - 0.4f * Mathf.Clamp01((lift + bonusLift) / Mathf.Max(0.001f, hopHeight));
+        float size = shrink * scaleMultiplier;
+        shadowT.localScale = new Vector3(shadowSize.x * size / ls.x, shadowSize.y * size / ls.y, 1f);
         Color c = shadowColor;
         c.a *= fade * shrink;
         shadowSr.color = c;

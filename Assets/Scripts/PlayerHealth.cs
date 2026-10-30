@@ -52,11 +52,11 @@ public class PlayerHealth : MonoBehaviour
         sr.color = c;
     }
 
-    public void TakeHit()
+    public void TakeHit(int damage = 1)
     {
         if (gameOver || Time.time < invincibleUntil) return;
 
-        lives--;
+        lives-=damage;
         invincibleUntil = Time.time + invincibleTime;
 
         if (lives <= 0)

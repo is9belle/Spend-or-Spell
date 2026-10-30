@@ -92,7 +92,7 @@ public class PlayerCaster : MonoBehaviour
         Spell s = spells[selected];
         if (Input.GetMouseButton(0) && Time.time >= s.nextCast)
         {
-            if (GoldManager.Instance.gold >= s.cost && TryCast(s))
+            if (GoldManager.Instance.CanAfford(s.cost) && TryCast(s))
             {
                 GoldManager.Instance.TrySpend(s.cost);
                 s.lastCd = s.cooldown * cooldownMultiplier;
@@ -222,7 +222,6 @@ public class PlayerCaster : MonoBehaviour
 
         Color cream = new Color(1f, 0.92f, 0.6f);
         GoldManager gm = GoldManager.Instance;
-        int gold = gm != null ? gm.gold : 0;
         Sprite manaIcon = gm != null ? gm.manaIcon : null;
 
         float pulse = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 3f);
@@ -236,7 +235,7 @@ public class PlayerCaster : MonoBehaviour
             Spell sp = spells[i];
             bool unlocked = sp.unlocked;
             bool sel = unlocked && i == selected;
-            bool affordable = gold >= sp.cost;
+            bool affordable = gm != null && gm.CanAfford(sp.cost);
 
             // each spell has its own cooldown
             float remaining = Mathf.Max(0f, sp.nextCast - Time.time);

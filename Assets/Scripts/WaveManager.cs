@@ -1,11 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
+public class EnemySpawn
+{
+    public GameObject prefab;
+    public int firstWave = 1;       // first wave it can appear on
+    public int lastWave = 0;        // 0 = never stops appearing
+    public float weight = 1f;       // higher = more common
+}
+
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
 
     public GameObject enemyPrefab;
+    public EnemySpawn[] enemyTypes;   // if this has entries, it is used instead of the single Enemy Prefab
     public GameObject coinPrefab;
     public Transform player;
     public ShopManager shop;
@@ -20,6 +30,11 @@ public class WaveManager : MonoBehaviour
     public int startingCoins = 5;         // coins scattered at the start of each wave
     public float shopDelay = 3f;          // seconds you can keep moving after the last kill
     public Vector2 arenaHalfSize = new Vector2(19f, 11f);
+
+    [Header("Boss")]
+    public GameObject bossPrefab;
+    public int bossEveryNWaves = 10;
+    public bool IsBossWave { get; private set; }
 
     [Header("HUD text (top left)")]
     public Font font;                      // your gothic font
@@ -69,9 +84,38 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < startingCoins; i++)
             Instantiate(coinPrefab, RandomPoint(), Quaternion.identity);
 
+        IsBossWave = bossPrefab != null && bossEveryNWaves > 0 && wave % bossEveryNWaves == 0;
+        if (IsBossWave)
+        {
+            remaining = 1;   // only the boss counts toward ending the wave
+            Instantiate(bossPrefab, new Vector3(0f, arenaHalfSize.y * 0.5f, 0f), Quaternion.identity);
+            return;
+        }
         int total = baseEnemies + (wave - 1) * enemiesPerWave;
         remaining = total;
         StartCoroutine(SpawnRoutine(total));
+    }
+
+    bool Allowed(EnemySpawn t)
+    {
+        return t.prefab != null && wave >= t.firstWave && (t.lastWave <= 0 || wave <= t.lastWave);
+    }
+
+    GameObject PickEnemy()
+    {
+        float total = 0f;
+        if (enemyTypes != null)
+            foreach (var t in enemyTypes) if (Allowed(t)) total += t.weight;
+        if (total <= 0f) return enemyPrefab;
+
+        float roll = Random.value * total;
+        foreach (var t in enemyTypes)
+        {
+            if (!Allowed(t)) continue;
+            roll -= t.weight;
+            if (roll <= 0f) return t.prefab;
+        }
+        return enemyPrefab;
     }
 
     IEnumerator SpawnRoutine(int total)
@@ -79,7 +123,8 @@ public class WaveManager : MonoBehaviour
         float interval = Mathf.Max(minSpawnInterval, spawnInterval - intervalShrink * (wave - 1));
         for (int i = 0; i < total; i++)
         {
-            Enemy e = Instantiate(enemyPrefab, SpawnPoint(), Quaternion.identity).GetComponent<Enemy>();
+            GameObject prefab = PickEnemy();
+            Enemy e = Instantiate(prefab, SpawnPoint(), Quaternion.identity).GetComponent<Enemy>();
             e.speed *= 1f + speedGrowth * (wave - 1);
             e.maxHealth = Mathf.RoundToInt(e.maxHealth * (1f + healthGrowth * (wave - 1)));
             yield return new WaitForSeconds(interval);
@@ -154,9 +199,8 @@ public class WaveManager : MonoBehaviour
         // ---- wave + enemies (top left, under the hearts) ----
         hudStyle.fontSize = Mathf.RoundToInt(hudFontSize * fontScale);
         DrawText(new Rect(10f, hudY, 500f, hudLineSpacing), "Wave " + wave, hudStyle, hudColor, 2f, 1f);
-        DrawText(new Rect(10f, hudY + hudLineSpacing, 500f, hudLineSpacing),
-                 "Enemies left: " + Mathf.Max(0, remaining), hudStyle, hudColor, 2f, 1f);
-
+        string enemiesLine = IsBossWave ? "Defeat the boss!" : "Enemies left: " + Mathf.Max(0, remaining);
+        DrawText(new Rect(10f, hudY + hudLineSpacing, 500f, hudLineSpacing), enemiesLine, hudStyle, hudColor, 2f, 1f);
         // ---- wave cleared + countdown (center) ----
         if (!clearing) return;
 

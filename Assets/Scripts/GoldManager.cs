@@ -4,6 +4,7 @@ public class GoldManager : MonoBehaviour
 {
     public static GoldManager Instance;
     public int gold = 20;
+    public bool infinite;   // switched on during boss fights
 
     [Header("HUD")]
     public Sprite manaIcon;                 // drag your mana crystal sprite here
@@ -20,8 +21,14 @@ public class GoldManager : MonoBehaviour
         Instance = this;
     }
 
+    public bool CanAfford(int cost)
+    {
+        return infinite || gold >= cost;
+    }
+
     public bool TrySpend(int cost)
     {
+        if (infinite) return true;
         if (gold < cost) return false;
         gold -= cost;
         return true;
@@ -59,7 +66,7 @@ public class GoldManager : MonoBehaviour
         style.fontSize = fontSize;
 
         float x = position.x, y = position.y;
-        string text = gold.ToString();
+        string text = infinite ? "∞" : gold.ToString();
 
         if (manaIcon != null)
         {
