@@ -339,6 +339,6 @@ MonoBehaviour:
   jumpTime: 0.5
   jumpHeight: 1.4
   slamRecover: 0.8
-  font: {fileID: 0}
+  font: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
   fontScale: 1.1
   barWidth: 0.46

@@ -62,6 +62,7 @@ public class PlayerHealth : MonoBehaviour
         if (lives <= 0)
         {
             gameOver = true;
+            if (MentorDialogue.Instance != null) MentorDialogue.Instance.GameOver();
             SetAlpha(1f);
             Time.timeScale = 0f; // freezes the game
         }

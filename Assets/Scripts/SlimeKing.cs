@@ -89,6 +89,7 @@ public class SlimeKing : MonoBehaviour
         introStart = Time.time;
         enemy.OnDeath += HandleDeath;
         if (GoldManager.Instance != null) GoldManager.Instance.infinite = true;
+        if (MentorDialogue.Instance != null) MentorDialogue.Instance.PlayBossIntro();
         StartCoroutine(Brain());
     }
 

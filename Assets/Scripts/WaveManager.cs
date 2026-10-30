@@ -81,6 +81,12 @@ public class WaveManager : MonoBehaviour
     {
         wave++;
 
+        if (MentorDialogue.Instance != null)
+        {
+            if (wave == 1) MentorDialogue.Instance.PlayIntro();
+            else if (wave == 2) MentorDialogue.Instance.Say("More of them, and they get faster and tougher. Funny how that works. It may help to learn new spells..");
+        }
+
         for (int i = 0; i < startingCoins; i++)
             Instantiate(coinPrefab, RandomPoint(), Quaternion.identity);
 
@@ -142,6 +148,7 @@ public class WaveManager : MonoBehaviour
         clearing = true;
         clearStart = Time.time;
         shopOpenTime = Time.time + shopDelay;
+        if (MentorDialogue.Instance != null) MentorDialogue.Instance.WaveCleared();
         yield return new WaitForSeconds(shopDelay);
         clearing = false;
         if (shop != null) shop.Open();

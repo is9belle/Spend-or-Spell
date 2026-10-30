@@ -1,6 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class EnemyIntro
+{
+    public string enemyName;                  // the enemy prefab's name, e.g. Bat
+    [TextArea(2, 4)] public string[] lines;   // one entry per message box
+    public bool pause;                        // true: the game pauses until Space is pressed
+}
+
 [RequireComponent(typeof(AudioSource))]
 public class MentorDialogue : MonoBehaviour
 {
@@ -13,6 +21,7 @@ public class MentorDialogue : MonoBehaviour
     [Header("Look")]
     public Font font;                        // your gothic font
     public float fontScale = 1.1f;
+    public float textSize = 28f;   // base size of the dialogue text (was 34)
     public float bottomOffset = 190f;        // room left for the spell bar (1080p pixels)
     public float widthFraction = 0.62f;      // box width as a share of the screen
 
@@ -22,6 +31,45 @@ public class MentorDialogue : MonoBehaviour
     public AudioClip blip;                   // optional "talking" sound
     [Range(0f, 1f)] public float blipVolume = 0.5f;
 
+    [Header("Boss")]
+    public string[] bossIntroLines =
+    {
+        "That is the Slime King. One of these comes for you every ten waves, and each one is tougher than the last.",
+        "When it crouches, a warning circle appears. That is where it will land. Get out of the circle before it comes down.",
+        "Right after a slam, it stands still. That is your chance to strike.",
+        "When it is weakened, it splits apart and calls minions. Do not panic. Keep moving.",
+        "For this fight, your mana is unlimited. Make good use of it. Countdowns still apply, so aim carefully."
+    };
+    public string[] bossReturnLines =
+    {
+        "The Slime King again, and tougher than before. Same rules as last time."
+    };
+
+    static bool bossSeen;
+
+    public void PlayBossIntro()
+    {
+        if (!bossSeen)
+        {
+            bossSeen = true;
+            TalkNow(bossIntroLines);       // full explanation the first time
+        }
+        else if (bossReturnLines != null && bossReturnLines.Length > 0)
+        {
+            Say(bossReturnLines[Random.Range(0, bossReturnLines.Length)], -1f, true);   // short reminder after that
+        }
+    }
+
+    // Starts a conversation right away, dropping any tips that are showing or waiting.
+    public void TalkNow(params string[] lines)
+    {
+        if (cur != null && !cur.block) cur = null;
+        var keep = new List<Line>();
+        foreach (Line l in queue) if (l.block) keep.Add(l);
+        queue.Clear();
+        foreach (Line l in keep) queue.Enqueue(l);
+        foreach (string l in lines) queue.Enqueue(new Line { text = l, block = true });
+    }
     [Header("Lines (edit these in the Inspector)")]
     public string[] clearedTips =
     {
@@ -34,6 +82,58 @@ public class MentorDialogue : MonoBehaviour
         "That's enough. I'm pulling you out.",
         "Back to the start with you. Try not to look so surprised."
     };
+    public string[] introLines =
+    {
+        "Ah, you're awake. Good.",
+        "This dungeon is enchanted. Everything you collect in here is mana, and it fades the moment you leave.",
+        "Move with WASD, aim with the mouse, and click to cast. Every spell costs mana.",
+        "Walk over the crystals the creatures drop to collect them. And never spend all of it. Mana you hold earns interest.",
+        "Try not to die. It reflects badly on me."
+    };
+    [Header("Enemy introductions (shown the first time each type appears)")]
+    public EnemyIntro[] enemyIntros =
+    {
+        new EnemyIntro { enemyName = "Slime", lines = new[] { "Slimes. Their hops are faster than you'd think. Keep moving." } },
+        new EnemyIntro { enemyName = "Bat", lines = new[] { "Bats. Fast and erratic. Let them come to you." } },
+        new EnemyIntro { enemyName = "Archer", lines = new[] { "An archer. It shoots from a distance, so close in fast or keep moving." } },
+        new EnemyIntro { enemyName = "Golem", lines = new[] { "A golem. Slow, but it takes a great many hits. Keep your distance." } }
+    };
+
+    static readonly HashSet<string> seenEnemies = new HashSet<string>();
+    float nextScan;
+
+    public void PlayIntro() { Intro(introLines); }
+    static string Normalize(string s)
+    {
+        return s.Replace("(Clone)", "").Replace(" ", "").ToLowerInvariant();
+    }
+
+    void ScanForNewEnemies()
+    {
+        if (Time.unscaledTime < nextScan) return;
+        nextScan = Time.unscaledTime + 0.4f;
+        if (enemyIntros == null || enemyIntros.Length == 0) return;
+
+        foreach (Enemy e in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        {
+            string key = Normalize(e.gameObject.name);
+            if (!seenEnemies.Add(key)) continue;      // already introduced
+
+            foreach (EnemyIntro intro in enemyIntros)
+            {
+                if (Normalize(intro.enemyName) != key) continue;
+                PlayEnemyIntro(intro);
+                break;
+            }
+        }
+    }
+
+    void PlayEnemyIntro(EnemyIntro intro)
+    {
+        if (intro.lines == null || intro.lines.Length == 0) return;
+        if (intro.pause) Talk(intro.lines);
+        else foreach (string l in intro.lines) Say(l, -1f, true);
+    }
 
     class Line { public string text; public bool block; public float hold; }
 
@@ -60,9 +160,9 @@ public class MentorDialogue : MonoBehaviour
     // ---------- what the rest of the game calls ----------
 
     // A short tip: the game keeps running and the box fades out by itself.
-    public void Say(string text, float hold = -1f)
+    public void Say(string text, float hold = -1f, bool force = false)
     {
-        if (queue.Count >= 3) return;        // don't let tips pile up
+        if (!force && queue.Count >= 3) return;        // don't let tips pile up
         queue.Enqueue(new Line { text = text, block = false, hold = hold < 0f ? defaultHold : hold });
     }
 
@@ -104,7 +204,17 @@ public class MentorDialogue : MonoBehaviour
 
     void Update()
     {
-        if (cur == null && queue.Count > 0) Begin(queue.Dequeue());
+        ScanForNewEnemies();
+
+        // a conversation keeps the game paused, even if another script tries to unpause it
+        if (pausedByMe && cur != null && cur.block) Time.timeScale = 0f;
+
+        if (cur == null && queue.Count > 0)
+        {
+            // if another screen (title, shop, game over) has the game paused, wait for it to finish first
+            bool otherPause = Time.timeScale == 0f && !pausedByMe;
+            if (!(queue.Peek().block && otherPause)) Begin(queue.Dequeue());
+        }
         if (cur == null) return;
 
         if (typed < cur.text.Length)
@@ -184,7 +294,6 @@ public class MentorDialogue : MonoBehaviour
         float f = sc * fontScale;
         nameStyle.font = font; textStyle.font = font; hintStyle.font = font;
         nameStyle.fontSize = Mathf.RoundToInt(30f * f);
-        textStyle.fontSize = Mathf.RoundToInt(34f * f);
         hintStyle.fontSize = Mathf.RoundToInt(24f * f);
 
         // fade in, and fade out for tips
@@ -223,9 +332,20 @@ public class MentorDialogue : MonoBehaviour
         MagicGui.Shadowed(tab, speakerName, nameStyle, cream, 1.5f * sc, a);
 
         // text, typed out. The not-yet-typed part is transparent so the words don't jump around.
+        Rect textRect = new Rect(textX, y + 28f * sc, x + w - pad - textX, h - 70f * sc);
+
+        // shrink the text until the whole line fits inside the box
+        int size = Mathf.RoundToInt(textSize * f);
+        textStyle.fontSize = size;
+        GUIContent measure = new GUIContent(cur.text);
+        while (size > 14 && textStyle.CalcHeight(measure, textRect.width) > textRect.height)
+        {
+            size -= 2;
+            textStyle.fontSize = size;
+        }
+
         int n = Mathf.Clamp(Mathf.FloorToInt(typed), 0, cur.text.Length);
         string shown = cur.text.Substring(0, n) + "<color=#00000000>" + cur.text.Substring(n) + "</color>";
-        Rect textRect = new Rect(textX, y + 28f * sc, x + w - pad - textX, h - 70f * sc);
         MagicGui.Shadowed(textRect, shown, textStyle, cream, 2f * sc, a);
 
         // "press Space" hint, only for conversations and only once the line is finished
