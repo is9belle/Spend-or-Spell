@@ -20,6 +20,7 @@ public class StartScreen : MonoBehaviour
 
     void StartGame()
     {
+        AudioManager.Click();
         hasStarted = true;
         Time.timeScale = 1f;
         enabled = false;
@@ -64,6 +65,7 @@ public class StartScreen : MonoBehaviour
             StartGame();
         if (GUI.Button(new Rect(cx - 120f, cy + 50f, 240f, 70f), "Quit", btn))
         {
+            AudioManager.Click();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

@@ -47,10 +47,12 @@ public class Breakable : MonoBehaviour
         shakeUntil = Time.time + 0.15f;
 
         if (--hits <= 0) Break();
+        else AudioManager.BarrelHit(transform.position);
     }
 
     void Break()
     {
+        AudioManager.BarrelBreak(transform.position);
         if (drops != null && drops.Length > 0 && Random.value < dropChance)
             Instantiate(drops[Random.Range(0, drops.Length)], transform.position, Quaternion.identity);
         Destroy(gameObject);

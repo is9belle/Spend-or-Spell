@@ -89,8 +89,8 @@ public class PlayerCaster : MonoBehaviour
         for (int i = 0; i < spells.Count; i++)
             if (Input.GetKeyDown(KeyCode.Alpha1 + i) && spells[i].unlocked) selected = i;
 
-        Spell s = spells[selected];
-        if (Input.GetMouseButton(0) && Time.time >= s.nextCast)
+        Spell s = spells[selected];                       // must come BEFORE the if below
+        if (Input.GetMouseButton(0) && !AudioManager.PointerOverUI && Time.time >= s.nextCast)
         {
             if (GoldManager.Instance.CanAfford(s.cost) && TryCast(s))
             {
@@ -123,6 +123,7 @@ public class PlayerCaster : MonoBehaviour
             transform.position + dir * 1f, Quaternion.identity);
         p.damage = Damage(s);
         p.Launch(dir);
+        AudioManager.FireCast(transform.position);
         return true;
     }
 
@@ -142,7 +143,7 @@ public class PlayerCaster : MonoBehaviour
             e.TakeDamage(Damage(s));
             any = true;
         }
-        if (any) ShowNovaFlash();
+        if (any) { ShowNovaFlash(); AudioManager.FrostCast(transform.position); }
         return any; // nothing in range = no cast, no gold spent, no cooldown
     }
 

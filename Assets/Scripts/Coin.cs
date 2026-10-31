@@ -9,6 +9,7 @@ public class Coin : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GoldManager.Instance.Add(value);
+            AudioManager.Pickup(transform.position);
             Destroy(gameObject);
         }
     }

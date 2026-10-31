@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
     float slowUntil;
     float phase, nextShot, strafeSign = 1f, nextStrafeFlip;
     float pauseUntil;
+    EnemySounds sounds;
 
     [Header("Boss / special")]
     public bool countsForWave = true;                      // false for minions, so they don't count as "Enemies left"
@@ -65,6 +66,7 @@ public class Enemy : MonoBehaviour
         baseColor = sr.color;
         phase = Random.Range(0f, 6.28f);
         nextShot = Time.time + firstShotDelay + Random.Range(0f, 0.8f);
+        sounds = GetComponent<EnemySounds>();
     }
 
     void FireArrow()
@@ -74,6 +76,7 @@ public class Enemy : MonoBehaviour
         d.z = 0f;
         d = d.normalized;
         EnemyProjectile.Spawn(transform.position + d * 0.6f, d, arrowSprite, arrowScale, arrowSpeed, arrowDamage);
+        if (sounds != null) sounds.Attack();
         pauseUntil = Time.time + recoveryPause;
     }
 
@@ -146,6 +149,7 @@ public class Enemy : MonoBehaviour
     void OnCollisionStay(Collision collision)
     {
         if (dead) return;
+        if (collision.collider.CompareTag("Player") && sounds != null) sounds.Attack();
         if (collision.collider.CompareTag("Player"))
             collision.collider.GetComponent<PlayerHealth>().TakeHit(contactDamage);
     }
@@ -162,12 +166,17 @@ public class Enemy : MonoBehaviour
         DamageNumbers.Spawn(transform.position, amount);
         health -= amount;
         if (health <= 0) Die();
-        else if (visuals != null) visuals.Flash();
+        else
+        {
+            if (sounds != null) sounds.Hurt();
+            if (visuals != null) visuals.Flash();
+        }
     }
 
     void Die()
     {
         dead = true;
+        if (sounds != null) sounds.Death();
         for (int i = 0; i < coinsDropped; i++)
         {
             Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0f);

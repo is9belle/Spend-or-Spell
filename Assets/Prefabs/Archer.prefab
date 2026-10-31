@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 7890206210796580054}
   - component: {fileID: -4035521969925936851}
   - component: {fileID: -6010076829777296044}
+  - component: {fileID: -2765256539030261128}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -284,3 +285,26 @@ MonoBehaviour:
   heightFraction: 0.4
   depth: 1
   liveUpdate: 0
+--- !u!114 &-2765256539030261128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906532698024607184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69c8a8a3cb9842cc9e1f2904ca1b49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySounds
+  steps:
+  - {fileID: 8300000, guid: a9785c45b8a2649ceae87af7d802e111, type: 3}
+  attack:
+  - {fileID: 8300000, guid: 2c5c39dc7c517462da91f5dd330cadb3, type: 3}
+  hurt: []
+  death: []
+  volume: 3
+  pitch: 1
+  stepInterval: 0.45
+  stepOnLanding: 0
+  attackCooldown: 1

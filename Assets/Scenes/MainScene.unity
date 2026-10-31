@@ -42900,6 +42900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 5
+  stepInterval: 0.36
 --- !u!54 &892674856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -95752,7 +95753,7 @@ MonoBehaviour:
   shopDelay: 2
   arenaHalfSize: {x: 19, y: 11}
   bossPrefab: {fileID: 8906532698024607184, guid: abaf115a809c14e5bbedddc3be8ae37d, type: 3}
-  bossEveryNWaves: 2
+  bossEveryNWaves: 10
   font: {fileID: 12800000, guid: 88017adeaa79245b0917f0d2d7abe6e8, type: 3}
   bodyFont: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
   fontScale: 1.1
@@ -95862,12 +95863,24 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 834e2b405b3f54532b30b061f54e4e52, type: 3}
   font: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
   fontScale: 1.1
+  textSize: 28
   bottomOffset: 190
   widthFraction: 0.62
   charsPerSecond: 45
   defaultHold: 3.5
   blip: {fileID: 0}
   blipVolume: 0.5
+  bossIntroLines:
+  - That is the Slime King. One of these comes for you every ten waves, and each
+    one is tougher than the last.
+  - When it crouches, a warning circle appears. That is where it will land. Get out
+    of the circle before it comes down.
+  - Right after a slam, it stands still. That is your chance to strike.
+  - When it is weakened, it splits apart and calls minions. Do not panic. Keep moving.
+  - For this fight, your mana is unlimited. Make good use of it. Countdowns still
+    apply, so aim carefully.
+  bossReturnLines:
+  - The Slime King again, and tougher than before. Same rules as last time.
   clearedTips:
   - Not bad. Spend your mana wisely, or save it. Your choice.
   - Mana you hold earns interest. Patience is a spell too.
@@ -95875,6 +95888,31 @@ MonoBehaviour:
   gameOverLines:
   - That's enough. I'm pulling you out.
   - Back to the start with you. Try not to look so surprised.
+  introLines:
+  - Ah, you're awake. Good.
+  - This dungeon is enchanted. Everything you collect in here is mana, and it fades
+    the moment you leave.
+  - Move with WASD, aim with the mouse, and click to cast. Every spell costs mana.
+  - Walk over the crystals the creatures drop to collect them. And never spend all
+    of it. Mana you hold earns interest.
+  - Try not to die. It reflects badly on me.
+  enemyIntros:
+  - enemyName: Slime
+    lines:
+    - Slimes. Their hops are faster than you'd think. Keep moving.
+    pause: 0
+  - enemyName: Bat
+    lines:
+    - Bats. Fast and erratic. Let them come to you.
+    pause: 0
+  - enemyName: Archer
+    lines:
+    - An archer. It shoots from a distance, so close in fast or keep moving.
+    pause: 0
+  - enemyName: Golem
+    lines:
+    - A golem. Slow, but it takes a great many hits. Keep your distance.
+    pause: 0
 --- !u!82 &1860532660
 AudioSource:
   m_ObjectHideFlags: 0

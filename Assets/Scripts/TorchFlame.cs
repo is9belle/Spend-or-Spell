@@ -13,6 +13,11 @@ public class TorchFlame : MonoBehaviour
     SpriteRenderer glowSr;
     float seed;
 
+    public AudioClip crackle;
+    public float crackleVolume = 0.35f;
+    public float crackleRange = 9f;
+    AudioSource src;
+
     void Start()
     {
         seed = Random.Range(0f, 100f);
@@ -30,6 +35,14 @@ public class TorchFlame : MonoBehaviour
         glowSr = g.AddComponent<SpriteRenderer>();
         glowSr.sprite = MakeGlow();
         glowSr.sortingOrder = sortingOrder;
+
+        if (crackle != null)
+        {
+            src = gameObject.AddComponent<AudioSource>();
+            src.clip = crackle; src.loop = true; src.playOnAwake = false; src.spatialBlend = 0f;
+            src.time = Random.value * crackle.length;     // so torches aren't in sync
+            src.Play();
+        }
     }
 
     Sprite MakeGlow()
@@ -67,5 +80,11 @@ public class TorchFlame : MonoBehaviour
         Color c = glowColor;
         c.a *= 0.8f + n1 * 0.4f;
         glowSr.color = c;
+
+        if (src != null)
+        {
+            src.volume = crackleVolume * AudioManager.SfxVolume * AudioManager.DistanceVolume(transform.position, crackleRange);
+            src.panStereo = AudioManager.Pan(transform.position);
+        }
     }
 }

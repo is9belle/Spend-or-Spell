@@ -6,7 +6,10 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Camera cam;
     Vector3 move;
+    public float stepInterval = 0.36f;
+    float stepTimer;
     public Vector3 MoveInput { get { return move; } }
+    
 
     void Start()
     {
@@ -18,6 +21,12 @@ public class PlayerController : MonoBehaviour
     {
         move = new Vector3(Input.GetAxisRaw("Horizontal"),
                            Input.GetAxisRaw("Vertical"), 0f).normalized;
+        if (move.sqrMagnitude > 0.01f && Time.timeScale > 0f)
+    {
+        stepTimer -= Time.deltaTime;
+        if (stepTimer <= 0f) { stepTimer = stepInterval; AudioManager.PlayerStep(transform.position); }
+    }
+    else stepTimer = 0f;
     }
 
     void FixedUpdate()

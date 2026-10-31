@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: -4035521969925936851}
   - component: {fileID: -6010076829777296044}
   - component: {fileID: 590258840559252080}
+  - component: {fileID: -963264228207106951}
   m_Layer: 0
   m_Name: SlimeKing
   m_TagString: Untagged
@@ -225,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 1.8
-  maxHealth: 300
+  maxHealth: 2000
   contactDamage: 1
   slowResistance: 0
   coinPrefab: {fileID: 6420567869763147499, guid: 71d76fdde7a75431e838c71952151943, type: 3}
@@ -300,7 +301,7 @@ MonoBehaviour:
   bossName: Slime King
   introSubtitle: A boss approaches!
   introTime: 2.8
-  bossEveryNWaves: 2
+  bossEveryNWaves: 10
   healthPerLevel: 0.6
   slimePrefab: {fileID: 8906532698024607184, guid: fb4981adbc4854588a0ee2c92b547178, type: 3}
   smallScale: 0.8
@@ -342,3 +343,25 @@ MonoBehaviour:
   font: {fileID: 12800000, guid: af9268fb49a9944b19dc6e7b37e0935d, type: 3}
   fontScale: 1.1
   barWidth: 0.46
+--- !u!114 &-963264228207106951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906532698024607184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69c8a8a3cb9842cc9e1f2904ca1b49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySounds
+  steps:
+  - {fileID: 8300000, guid: 666e1930660f244b6a41142905e82de7, type: 3}
+  attack: []
+  hurt: []
+  death: []
+  volume: 1
+  pitch: 1
+  stepInterval: 0.45
+  stepOnLanding: 1
+  attackCooldown: 1

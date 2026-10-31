@@ -56,16 +56,18 @@ public class PlayerHealth : MonoBehaviour
     {
         if (gameOver || Time.time < invincibleUntil) return;
 
-        lives-=damage;
+        lives -= damage;
         invincibleUntil = Time.time + invincibleTime;
 
         if (lives <= 0)
         {
             gameOver = true;
+            AudioManager.PlayerDeath(transform.position);
             if (MentorDialogue.Instance != null) MentorDialogue.Instance.GameOver();
             SetAlpha(1f);
-            Time.timeScale = 0f; // freezes the game
+            Time.timeScale = 0f;
         }
+        else AudioManager.PlayerHurt(transform.position);
     }
 
     void Update()
@@ -145,6 +147,7 @@ public class PlayerHealth : MonoBehaviour
         Rect retry = new Rect(w / 2f - 270f * s, h * 0.5f - 30f * s, 540f * s, 100f * s);
         if (MagicGui.Button(retry, "Retry", retryColor, font, btnFont, s))
         {
+            AudioManager.Click();
             Time.timeScale = 1f;
             SceneFader.Load(SceneManager.GetActiveScene().name);
         }
@@ -154,6 +157,7 @@ public class PlayerHealth : MonoBehaviour
             Rect menu = new Rect(w / 2f - 230f * s, h * 0.5f + 110f * s, 460f * s, 84f * s);
             if (MagicGui.Button(menu, "Main Menu", menuColor, font, Mathf.RoundToInt(40f * f), s))
             {
+                AudioManager.Click();
                 Time.timeScale = 1f;
                 SceneFader.Load(menuSceneName);
             }
