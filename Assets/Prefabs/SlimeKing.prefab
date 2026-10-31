@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 1.8
-  maxHealth: 2000
+  maxHealth: 1000
   contactDamage: 1
   slowResistance: 0
   coinPrefab: {fileID: 6420567869763147499, guid: 71d76fdde7a75431e838c71952151943, type: 3}
@@ -301,7 +301,7 @@ MonoBehaviour:
   bossName: Slime King
   introSubtitle: A boss approaches!
   introTime: 2.8
-  bossEveryNWaves: 10
+  bossEveryNWaves: 6
   healthPerLevel: 0.6
   slimePrefab: {fileID: 8906532698024607184, guid: fb4981adbc4854588a0ee2c92b547178, type: 3}
   smallScale: 0.8
